@@ -8,7 +8,6 @@ For this project, we expect you to look at these concepts:
 - [Python packages](https://alx-intranet.hbtn.io/concepts/66)
 - [AirBnB clone](https://alx-intranet.hbtn.io/concepts/74)
 
-
   ![Airbnb Console](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2018/6/65f4a1dd9c51265f49d0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20220801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220801T050509Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=9d30c1351aed7ca61e6bf8a3e6d637b0059e8e1bd19d4be19764fd598d5e0096)
 
 
