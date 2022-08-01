@@ -19,8 +19,7 @@ class FileStorage():
         self.__objects[obj.__class__.__name__ + "." + obj.id] = obj
 
     def save(self):
-        """Serializes __objects to the JSON file (path: __file_path  
-        """
+        """Serializes __objects to the JSON file """
         temp = dict()
         for keys in self.__objects.keys():
             temp[keys] = self.__objects[keys].to_dict()
@@ -33,9 +32,10 @@ class FileStorage():
         """
         from ..base_model import BaseModel
 
-        if exists(self.__file_path):
-            with open(self.__file_path) as json_file:
+        try:
+            with open(self.__file_path, 'r', encoding='utf-8') as json_file:
                 deserialize = json.load(json_file)
             for key in deserialize.keys():
-                if deserialize[key]['__class__'] == 'BaseModel':
-                    self.__objects[key] = BaseModel(**deserialize[key])
+                self.__objects[key] = BaseModel(**deserialize[key])
+        except:
+            pass
