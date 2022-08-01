@@ -8,7 +8,8 @@ For this project, we expect you to look at these concepts:
 - [Python packages](https://alx-intranet.hbtn.io/concepts/66)
 - [AirBnB clone](https://alx-intranet.hbtn.io/concepts/74)
 
-![Airbnb Console](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2018/6/65f4a1dd9c51265f49d0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20220801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220801T050509Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=9d30c1351aed7ca61e6bf8a3e6d637b0059e8e1bd19d4be19764fd598d5e0096)
+
+  ![Airbnb Console](https://s3.amazonaws.com/alx-intranet.hbtn.io/uploads/medias/2018/6/65f4a1dd9c51265f49d0.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIARDDGGGOUSBVO6H7D%2F20220801%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20220801T050509Z&X-Amz-Expires=86400&X-Amz-SignedHeaders=host&X-Amz-Signature=9d30c1351aed7ca61e6bf8a3e6d637b0059e8e1bd19d4be19764fd598d5e0096)
 
 
 
@@ -16,7 +17,7 @@ For this project, we expect you to look at these concepts:
 ## Welcome to the AirBnB clone project!
 
 Before starting, please read the AirBnB concept page.
-![General Overview](https://youtu.be/E12Xc3H2xqo)
+[General Overview](https://youtu.be/E12Xc3H2xqo)
 
 
 ### First step: Write a command interpreter to manage your AirBnB objects.
@@ -45,13 +46,13 @@ Do you remember the Shell? It’s exactly the same but limited to a specific use
 
 #### Read or watch:
 
-  - cmd module
-  - packages concept page
-  - uuid module
-  - datetime
-  - unittest module
-  - args/kwargs
-  - Python test cheatsheet
+  - [cmd module](https://docs.python.org/3.8/library/cmd.html)
+  - [packages concept page]()
+  - [uuid module](https://docs.python.org/3.8/library/uuid.html)
+  - [datetime](https://docs.python.org/3.8/library/datetime.html)
+  - [unittest module](https://docs.python.org/3.8/library/unittest.html#module-unittest)
+  - [args/kwargs](https://yasoob.me/2013/08/04/args-and-kwargs-in-python-explained/)
+  - [Python test cheatsheet](https://www.pythonsheets.com/notes/python-tests.html)
 
 
 ## Learning Objectives
