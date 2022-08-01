@@ -15,13 +15,9 @@ class BaseModel:
         updated_at: The datetime at last update
 
     """
-    id = str(uuid.uuid4())
-    created_at = datetime.utcnow()
-    updated_at = datetime.utcnow()
 
     def __init__(self, *args, **kwargs):
-        """Initialize a new Base Model
-        """
+        """Initialize a new Base Model"""
         if kwargs is None or len(kwargs) == 0:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.utcnow()
@@ -40,10 +36,12 @@ class BaseModel:
         return "[{:s}] [{:s}] {}".format(classname, self.id, self.__dict__)
 
     def save(self):
+        """udates updated_at with the current time"""
         self.updated_at = datetime.utcnow()
         storage.save()
 
     def to_dict(self):
+        """Creates a dictionary of BaseModel"""
         my_dict = dict(self.__dict__)
         my_dict["__class__"] = type(self.__class__.__name__)
         my_dict["created_at"] = self.created_at.isoformat()
