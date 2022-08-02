@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import cmd
+import json
 from models.base_model import BaseModel
 from models import storage
 
@@ -23,6 +24,13 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """command to handle empty line"""
         pass
+
+    def check_for_id(self, id_dict, id_instance):
+        for id in id_dict:
+            if id_instance == id.split(".")[1]:
+                return 1
+        else:
+            return 0
 
     def do_create(self, line):
         """create class instance based on class name
@@ -75,7 +83,34 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, line):
         """Delete instance based on class name and id
         Ex: destroy BaseModel 1234-1234-1234"""
-        pass
+        if (len(line) == 0):
+            print('** class name missing **')
+            return
+        split_line = line.split()
+        class_name = split_line[0]
+        if len(split_line) > 1:
+            model_id = split_line[1]
+        else:
+            print("** instance id missing **")
+            return
+        
+        for model in self.MODELS:
+            if class_name == model.__name__:
+                storage.reload()
+                files = storage.all()
+                filter = dict()
+                if self.check_for_id(files.keys(), model_id):
+                    for k in files.keys():
+                        if model_id not in k:
+                            filter[k] = files[k].to_dict()
+                    with open("file.json", mode='w') as json_file:
+                        json.dump(filter, json_file)
+                else:
+                    print("** no instance found **")
+                return
+        else:
+            print("** class doesn't exist **")
+        
 
     def do_all(self, line):
         """Print string representation of all
