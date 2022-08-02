@@ -142,7 +142,48 @@ class HBNBCommand(cmd.Cmd):
         """update an instance based on class name and id
         updating existing attributes or adding new ones
         Ex: update BaseModel 1234-1234-1234 email 'aibnb@mail.com'"""
-        pass
+        if (len(line) == 0):
+            print('** class name missing **')
+            return
+        split_line = line.split()
+        class_name = split_line[0]
+        if len(split_line) > 1:
+            model_id = split_line[1]
+        else:
+            print("** instance id missing **")
+            return
+
+        for model in self.MODELS:
+            if class_name == model.__name__:
+                storage.reload()
+                files = storage.all()
+                for k in files:
+                    split_key = k.split(".")
+                    if split_key[0] == class_name and split_key[1] == model_id:
+                        model_instance = model(**files[k].to_dict())
+                        if len(split_line) > 2:
+                            attr = split_line[2]
+                        else:
+                            print("** attribute name missing **")
+                            return
+                        print(len(split_line))
+                        if len(split_line) > 3:
+                            value = split_line[3]
+                        else:
+                            print("** value missing **")
+                            return
+                        setattr(model_instance, attr, value)
+
+                        storage.reload()
+                        files = storage.all()
+                        update = dict()
+                        for k in files.keys():
+                            if model_instance.id in k:
+                                update[k] = model_instance.to_dict()
+                            else:
+                                update[k] = files[k].to_dict()
+                        with open("file.json", mode='w') as json_file:
+                            json.dump(update, json_file)
 
 
 if __name__ == '__main__':
