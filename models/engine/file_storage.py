@@ -1,7 +1,9 @@
 #!/usr/bin/python3
 """File Storage for AirBnb Console"""
 import json
-from os.path import exists
+from os import path
+from models.base_model import BaseModel
+
 
 
 class FileStorage():
@@ -27,15 +29,14 @@ class FileStorage():
             json.dump(temp, json_file)
 
     def reload(self):
-        """deserializes the JSON file to __objects (only if the JSON file (__file_path) 
-        exists ; otherwise, do nothing. If the file doesn't exist, no exception should be raised)  
+        """deserializes the JSON file to __objects
+        (only if the JSON file (__file_path)
+        exists ; otherwise, do nothing.
+        If the file doesn't exist, no exception should be raised)
         """
-        from ..base_model import BaseModel
 
-        try:
+        if path.exists(self.__file_path) is True:
             with open(self.__file_path, 'r', encoding='utf-8') as json_file:
                 deserialize = json.load(json_file)
             for key in deserialize.keys():
                 self.__objects[key] = BaseModel(**deserialize[key])
-        except:
-            pass
