@@ -5,7 +5,6 @@ from os import path
 from models.base_model import BaseModel
 
 
-
 class FileStorage():
     """Defines a Class for Filestorage"""
 

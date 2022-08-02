@@ -93,7 +93,7 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** instance id missing **")
             return
-        
+
         for model in self.MODELS:
             if class_name == model.__name__:
                 storage.reload()
@@ -110,13 +110,33 @@ class HBNBCommand(cmd.Cmd):
                 return
         else:
             print("** class doesn't exist **")
-        
 
     def do_all(self, line):
         """Print string representation of all
         instance based or not on class name
         Ex: all BaseModel or all"""
-        pass
+        my_list = []
+        storage.reload()
+        files = storage.all()
+        if line:
+            class_name = line.split()[0]
+            for model in self.MODELS:
+                if class_name == model.__name__:
+                    for item in files:
+                        sub_items = files[item].to_dict()
+                        if sub_items["__class__"] == class_name:
+                            sub_instance = BaseModel(**sub_items)
+                            my_list.append(str(sub_instance))
+                    print(my_list)
+                    return
+            else:
+                print("** class doesn't exist **")
+        else:
+            for item in files:
+                sub_items = files[item].to_dict()
+                sub_instance = BaseModel(**sub_items)
+                my_list.append(str(sub_instance))
+            print(my_list)
 
     def do_update(self, line):
         """update an instance based on class name and id
