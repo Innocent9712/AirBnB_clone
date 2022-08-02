@@ -2,6 +2,8 @@
 """File Storage for AirBnb Console"""
 import json
 from os import path
+from models.base_model import BaseModel
+
 
 
 class FileStorage():
@@ -32,7 +34,6 @@ class FileStorage():
         exists ; otherwise, do nothing.
         If the file doesn't exist, no exception should be raised)
         """
-        from ..base_model import BaseModel
 
         if path.exists(self.__file_path) is True:
             with open(self.__file_path, 'r', encoding='utf-8') as json_file:
