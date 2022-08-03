@@ -19,7 +19,8 @@ class Place(BaseModel):
             price_by_night: (Int) - 0
             latitude: (float) - 0.0
             longitude: (float_ - 0.0
-            amenity_ids: list: Str - empty list: it will be the list of Amenity.id later
+            amenity_ids: list: Str - empty list: it will be the
+            list of Amenity.id later
 
     """
     city_id = ""
