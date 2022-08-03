@@ -10,6 +10,7 @@ from models.review import Review
 from models.amenity import Amenity
 from models.city import City
 
+
 class FileStorage():
     """Defines a Class for Filestorage"""
 
@@ -46,6 +47,5 @@ class FileStorage():
                 deserialize = json.load(json_file)
             for key in deserialize.keys():
                 for model in MODELS:
-                    if model.__name__ == deserialize[key]["__class__"]:               
+                    if model.__name__ == deserialize[key]["__class__"]:
                         self.__objects[key] = model(**deserialize[key])
-
