@@ -3,6 +3,7 @@
 import cmd
 import json
 from models.base_model import BaseModel
+from models.user import User
 from models import storage
 
 
@@ -10,7 +11,7 @@ class HBNBCommand(cmd.Cmd):
     """command line terminal for HBNB"""
 
     prompt = '(hbnb) '
-    MODELS = [BaseModel]
+    MODELS = [BaseModel, User]
 
     def do_quit(self, line):
         """command to exit the command line"""
@@ -76,7 +77,7 @@ class HBNBCommand(cmd.Cmd):
                         return
                 else:
                     print("** no instance found **")
-            return
+                    return
         else:
             print("** class doesn't exist **")
 
@@ -125,7 +126,7 @@ class HBNBCommand(cmd.Cmd):
                     for item in files:
                         sub_items = files[item].to_dict()
                         if sub_items["__class__"] == class_name:
-                            sub_instance = BaseModel(**sub_items)
+                            sub_instance = model(**sub_items)
                             my_list.append(str(sub_instance))
                     print(my_list)
                     return
@@ -134,8 +135,10 @@ class HBNBCommand(cmd.Cmd):
         else:
             for item in files:
                 sub_items = files[item].to_dict()
-                sub_instance = BaseModel(**sub_items)
-                my_list.append(str(sub_instance))
+                for model in self.MODELS:
+                    if sub_items["__class__"] == model.__name__:
+                        sub_instance = model(**sub_items)
+                        my_list.append(str(sub_instance))
             print(my_list)
 
     def do_update(self, line):
@@ -155,7 +158,7 @@ class HBNBCommand(cmd.Cmd):
 
         for model in self.MODELS:
             if class_name == model.__name__:
-                storage.reload()
+                # storage.reload()
                 files = storage.all()
                 for k in files:
                     split_key = k.split(".")

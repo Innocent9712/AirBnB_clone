@@ -3,8 +3,7 @@
 import json
 from os import path
 from models.base_model import BaseModel
-
-
+from models.user import User
 class FileStorage():
     """Defines a Class for Filestorage"""
 
@@ -34,8 +33,13 @@ class FileStorage():
         If the file doesn't exist, no exception should be raised)
         """
 
+        MODELS = [BaseModel, User]
+
         if path.exists(self.__file_path) is True:
             with open(self.__file_path, 'r', encoding='utf-8') as json_file:
                 deserialize = json.load(json_file)
             for key in deserialize.keys():
-                self.__objects[key] = BaseModel(**deserialize[key])
+                for model in MODELS:
+                    if model.__name__ == deserialize[key]["__class__"]:               
+                        self.__objects[key] = model(**deserialize[key])
+
