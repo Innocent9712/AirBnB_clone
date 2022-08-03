@@ -49,3 +49,7 @@ class FileStorage():
                 for model in MODELS:
                     if model.__name__ == deserialize[key]["__class__"]:
                         self.__objects[key] = model(**deserialize[key])
+        else:
+            with open(self.__file_path, "w", encoding='utf-8') as json_file:
+                json.dump({}, json_file)
+            self.reload()
