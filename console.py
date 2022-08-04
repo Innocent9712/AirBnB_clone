@@ -28,6 +28,20 @@ class HBNBCommand(cmd.Cmd):
         to exit the command line"""
         return True
 
+    def precmd(self, line):
+        parse_line = line
+        if line[-1] == ")" and "." in line:
+            parse_line = ""
+            line_arr = line.split(".")
+            class_name = line_arr[0]
+            cmd_arr = line_arr[1].split('(')
+            cmd_name = cmd_arr[0]
+            cmd_arg = cmd_arr[1][:-1]
+            cmd_arg_arr = cmd_arg.split(", ")
+            cmd_arg = " ".join(cmd_arg_arr)
+            parse_line = cmd_name + " " + class_name + " " + cmd_arg
+        return super().precmd(parse_line)
+
     def emptyline(self):
         """command to handle empty line"""
         pass
@@ -41,6 +55,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """create class instance based on class name
+
+        Usage: create <class> or <class>.create()
+
         Ex: create BaseModel"""
 
         if (len(line) == 0):
@@ -59,6 +76,9 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, line):
         """Print string representation of a particular
         instance based on class name and id
+
+        Usage: show <class> <id> or <class>.show(<id>)
+
         Ex: show BaseModel 1234-1234-1234"""
         if (len(line) == 0):
             print('** class name missing **')
@@ -89,6 +109,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, line):
         """Delete instance based on class name and id
+
+        Usage: destroy <class> <id> or <class>.destroy(<id>)
+
         Ex: destroy BaseModel 1234-1234-1234"""
         if (len(line) == 0):
             print('** class name missing **')
@@ -121,6 +144,9 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, line):
         """Print string representation of all
         instance based or not on class name
+
+        Usage: all <class> | all or <class>.all()
+
         Ex: all BaseModel or all"""
         my_list = []
         storage.reload()
@@ -150,6 +176,12 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """update an instance based on class name and id
         updating existing attributes or adding new ones
+
+        Usage: update <class> <id> <attribute> <value>
+        or <class>.update(<id>, <attribute>, <value>)
+        attribute and value can also be replaced with a dictionary of
+        attributes and values.
+
         Ex: update BaseModel 1234-1234-1234 email 'aibnb@mail.com'"""
         if (len(line) == 0):
             print('** class name missing **')
@@ -175,7 +207,6 @@ class HBNBCommand(cmd.Cmd):
                         else:
                             print("** attribute name missing **")
                             return
-                        print(len(split_line))
                         if len(split_line) > 3:
                             value = split_line[3]
                         else:
@@ -186,13 +217,42 @@ class HBNBCommand(cmd.Cmd):
                         storage.reload()
                         files = storage.all()
                         update = dict()
-                        for k in files.keys():
-                            if model_instance.id in k:
-                                update[k] = model_instance.to_dict()
-                            else:
-                                update[k] = files[k].to_dict()
-                        with open("file.json", mode='w') as json_file:
-                            json.dump(update, json_file)
+                        if self.check_for_id(files.keys(), model_id):
+                            for k in files.keys():
+                                if model_instance.id in k:
+                                    update[k] = model_instance.to_dict()
+                                else:
+                                    update[k] = files[k].to_dict()
+                            with open("file.json", mode='w') as json_file:
+                                json.dump(update, json_file)
+                else:
+                    print("** no instance found **")
+                    return
+        else:
+            print("** class doesn't exist **")
+
+    def do_count(self, line):
+        """Print count of instances of a particular class
+
+        Usage: <class>.count() or count <class>"""
+        if line:
+            class_name = line.split()[0]
+            for model in self.MODELS:
+                if class_name == model.__name__:
+                    break
+            else:
+                print("** class doesn't exist **")
+                return
+
+            storage.reload()
+            count = 0
+            files = storage.all()
+            for k in files.keys():
+                if k.split(".")[0] == class_name:
+                    count += 1
+            print(count)
+        else:
+            print('** class name missing **')
 
 
 if __name__ == '__main__':
