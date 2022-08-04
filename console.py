@@ -212,6 +212,26 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
 
+    def do_count(self, line):
+        if line:
+            class_name = line.split()[0]
+            for model in self.MODELS:
+                if class_name == model.__name__:
+                    break
+            else:
+                print("** class doesn't exist **")
+                return
+
+            storage.reload()
+            count = 0
+            files = storage.all()
+            for k in files.keys():
+                if k.split(".")[0] == class_name:
+                    count += 1
+            print(count)
+        else:
+            print('** class name missing **')            
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
