@@ -54,6 +54,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, line):
         """create class instance based on class name
+
+        Usage: create <class> or <class>.create()
+
         Ex: create BaseModel"""
 
         if (len(line) == 0):
@@ -72,6 +75,9 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, line):
         """Print string representation of a particular
         instance based on class name and id
+
+        Usage: show <class> <id> or <class>.show(<id>)
+
         Ex: show BaseModel 1234-1234-1234"""
         if (len(line) == 0):
             print('** class name missing **')
@@ -102,6 +108,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, line):
         """Delete instance based on class name and id
+
+        Usage: destroy <class> <id> or <class>.destroy(<id>)
+
         Ex: destroy BaseModel 1234-1234-1234"""
         if (len(line) == 0):
             print('** class name missing **')
@@ -134,6 +143,9 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, line):
         """Print string representation of all
         instance based or not on class name
+
+        Usage: all <class> | all or <class>.all()
+
         Ex: all BaseModel or all"""
         my_list = []
         storage.reload()
@@ -163,6 +175,12 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, line):
         """update an instance based on class name and id
         updating existing attributes or adding new ones
+
+        Usage: update <class> <id> <attribute> <value>
+        or <class>.update(<id>, <attribute>, <value>)
+        attribute and value can also be replaced with a dictionary of
+        attributes and values.
+
         Ex: update BaseModel 1234-1234-1234 email 'aibnb@mail.com'"""
         if (len(line) == 0):
             print('** class name missing **')
@@ -211,6 +229,29 @@ class HBNBCommand(cmd.Cmd):
                     return
         else:
             print("** class doesn't exist **")
+
+    def do_count(self, line):
+        """Print count of instances of a particular class
+
+        Usage: <class>.count() or count <class>"""
+        if line:
+            class_name = line.split()[0]
+            for model in self.MODELS:
+                if class_name == model.__name__:
+                    break
+            else:
+                print("** class doesn't exist **")
+                return
+
+            storage.reload()
+            count = 0
+            files = storage.all()
+            for k in files.keys():
+                if k.split(".")[0] == class_name:
+                    count += 1
+            print(count)
+        else:
+            print('** class name missing **')
 
 
 if __name__ == '__main__':
