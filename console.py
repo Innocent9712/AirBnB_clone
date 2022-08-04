@@ -96,7 +96,11 @@ class HBNBCommand(cmd.Cmd):
                 files = storage.all()
                 for k in files:
                     split_key = k.split(".")
-                    if split_key[0] == class_name and split_key[1] == model_id:
+                    if (len(model_id) - len(model_id.strip('\"')) == 2 or
+                            len(model_id) - len(model_id.strip('\"')) == 2):
+                        model_id = model_id.strip('\"\'')
+                    if split_key[0] == class_name and split_key[1] == \
+                            model_id:
                         model_instance = model(**files[k].to_dict())
                         print(model_instance)
                         return
@@ -197,8 +201,12 @@ class HBNBCommand(cmd.Cmd):
             if class_name == model.__name__:
                 # storage.reload()
                 files = storage.all()
+                found = 0
                 for k in files:
                     split_key = k.split(".")
+                    if (len(model_id) - len(model_id.strip('\"')) == 2 or
+                            len(model_id) - len(model_id.strip('\"')) == 2):
+                        model_id = model_id.strip('\"\'')
                     if split_key[0] == class_name and split_key[1] == model_id:
                         model_instance = model(**files[k].to_dict())
                         if len(split_line) > 2:
@@ -224,6 +232,7 @@ class HBNBCommand(cmd.Cmd):
                                     update[k] = files[k].to_dict()
                             with open("file.json", mode='w') as json_file:
                                 json.dump(update, json_file)
+                                return
                 else:
                     print("** no instance found **")
                     return
