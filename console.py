@@ -15,6 +15,7 @@ from models import storage
 class HBNBCommand(cmd.Cmd):
     """command line terminal for HBNB"""
 
+    intro = "WELCOME TO HBNB SHELL"
     prompt = '(hbnb) '
     MODELS = [Amenity, BaseModel, City, Place, Review, State, User]
 
