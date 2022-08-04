@@ -27,6 +27,20 @@ class HBNBCommand(cmd.Cmd):
         to exit the command line"""
         return True
 
+    def precmd(self, line):
+        parse_line = line
+        if line[-1] == ")" and "." in line:
+            parse_line = ""
+            line_arr = line.split(".")
+            class_name = line_arr[0]
+            cmd_arr = line_arr[1].split('(')
+            cmd_name = cmd_arr[0]
+            cmd_arg = cmd_arr[1][:-1]
+            cmd_arg_arr = cmd_arg.split(", ")
+            cmd_arg = " ".join(cmd_arg_arr)
+            parse_line = cmd_name + " " + class_name + " " + cmd_arg
+        return super().precmd(parse_line)
+
     def emptyline(self):
         """command to handle empty line"""
         pass
@@ -174,7 +188,6 @@ class HBNBCommand(cmd.Cmd):
                         else:
                             print("** attribute name missing **")
                             return
-                        print(len(split_line))
                         if len(split_line) > 3:
                             value = split_line[3]
                         else:
@@ -185,13 +198,19 @@ class HBNBCommand(cmd.Cmd):
                         storage.reload()
                         files = storage.all()
                         update = dict()
-                        for k in files.keys():
-                            if model_instance.id in k:
-                                update[k] = model_instance.to_dict()
-                            else:
-                                update[k] = files[k].to_dict()
-                        with open("file.json", mode='w') as json_file:
-                            json.dump(update, json_file)
+                        if self.check_for_id(files.keys(), model_id):
+                            for k in files.keys():
+                                if model_instance.id in k:
+                                    update[k] = model_instance.to_dict()
+                                else:
+                                    update[k] = files[k].to_dict()
+                            with open("file.json", mode='w') as json_file:
+                                json.dump(update, json_file)
+                else:
+                    print("** no instance found **")
+                    return
+        else:
+            print("** class doesn't exist **")
 
 
 if __name__ == '__main__':
