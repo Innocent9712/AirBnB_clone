@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+"""Module for console class"""
+
 
 import cmd
 import json
@@ -30,28 +32,29 @@ class HBNBCommand(cmd.Cmd):
 
     def precmd(self, line):
         parse_line = line
-        if line[-1] == ")" and "." in line:
-            parse_line = ""
-            line_arr = line.split(".")
-            class_name = line_arr[0]
-            cmd_arr = line_arr[1].split('(')
-            cmd_name = cmd_arr[0]
-            cmd_arg = cmd_arr[1][:-1]
-            cmd_arg_arr = cmd_arg.split(", ")
-            cmd_arg = " ".join(cmd_arg_arr)
-            parse_line = cmd_name + " " + class_name + " " + cmd_arg
+        if line:
+            if line[-1] == ")" and "." in line:
+                parse_line = ""
+                line_arr = line.split(".")
+                class_name = line_arr[0]
+                cmd_arr = line_arr[1].split('(')
+                cmd_name = cmd_arr[0]
+                cmd_arg = cmd_arr[1][:-1]
+                cmd_arg_arr = cmd_arg.split(", ")
+                cmd_arg = " ".join(cmd_arg_arr)
+                parse_line = cmd_name + " " + class_name + " " + cmd_arg
         return super().precmd(parse_line)
 
     def emptyline(self):
         """command to handle empty line"""
-        pass
+        return
 
     def check_for_id(self, id_dict, id_instance):
-        for id in id_dict:
-            if id_instance == id.split(".")[1]:
+        """checks list of keys to find an id"""
+        for ind_id in id_dict:
+            if id_instance == ind_id.split(".")[1]:
                 return 1
-        else:
-            return 0
+        return 0
 
     def do_create(self, line):
         """create class instance based on class name
@@ -60,7 +63,7 @@ class HBNBCommand(cmd.Cmd):
 
         Ex: create BaseModel"""
 
-        if (len(line) == 0):
+        if len(line) == 0:
             print('** class name missing **')
             return
         class_name = line.split()[0]
@@ -70,8 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 print(model_instance.id)
                 model_instance.save()
                 return
-        else:
-            print("** class doesn't exist **")
+        print("** class doesn't exist **")
 
     def do_show(self, line):
         """Print string representation of a particular
@@ -80,7 +82,7 @@ class HBNBCommand(cmd.Cmd):
         Usage: show <class> <id> or <class>.show(<id>)
 
         Ex: show BaseModel 1234-1234-1234"""
-        if (len(line) == 0):
+        if len(line) == 0:
             print('** class name missing **')
             return
         split_line = line.split()
@@ -105,11 +107,9 @@ class HBNBCommand(cmd.Cmd):
                         model_instance = model(**files[k].to_dict())
                         print(model_instance)
                         return
-                else:
-                    print("** no instance found **")
-                    return
-        else:
-            print("** class doesn't exist **")
+                print("** no instance found **")
+                return
+        print("** class doesn't exist **")
 
     def do_destroy(self, line):
         """Delete instance based on class name and id
@@ -117,7 +117,7 @@ class HBNBCommand(cmd.Cmd):
         Usage: destroy <class> <id> or <class>.destroy(<id>)
 
         Ex: destroy BaseModel 1234-1234-1234"""
-        if (len(line) == 0):
+        if len(line) == 0:
             print('** class name missing **')
             return
         split_line = line.split()
@@ -132,18 +132,18 @@ class HBNBCommand(cmd.Cmd):
             if class_name == model.__name__:
                 storage.reload()
                 files = storage.all()
-                filter = dict()
+                dict_filter = {}
                 if self.check_for_id(files.keys(), model_id):
                     for k in files.keys():
                         if model_id not in k:
-                            filter[k] = files[k].to_dict()
-                    with open("file.json", mode='w') as json_file:
-                        json.dump(filter, json_file)
+                            dict_filter[k] = files[k].to_dict()
+                    with open("file.json", mode='w', encoding='utf-8')\
+                        as json_file:
+                        json.dump(dict_filter, json_file)
                 else:
                     print("** no instance found **")
                 return
-        else:
-            print("** class doesn't exist **")
+        print("** class doesn't exist **")
 
     def do_all(self, line):
         """Print string representation of all
@@ -166,8 +166,7 @@ class HBNBCommand(cmd.Cmd):
                             my_list.append(str(sub_instance))
                     print(my_list)
                     return
-            else:
-                print("** class doesn't exist **")
+            print("** class doesn't exist **")
         else:
             for item in files:
                 sub_items = files[item].to_dict()
@@ -187,7 +186,7 @@ class HBNBCommand(cmd.Cmd):
         attributes and values.
 
         Ex: update BaseModel 1234-1234-1234 email 'aibnb@mail.com'"""
-        if (len(line) == 0):
+        if len(line) == 0:
             print('** class name missing **')
             return
         split_line = line.split()
@@ -202,7 +201,6 @@ class HBNBCommand(cmd.Cmd):
             if class_name == model.__name__:
                 # storage.reload()
                 files = storage.all()
-                found = 0
                 for k in files:
                     split_key = k.split(".")
                     if (len(model_id) - len(model_id.strip('\"')) == 2 or
@@ -224,21 +222,20 @@ class HBNBCommand(cmd.Cmd):
 
                         storage.reload()
                         files = storage.all()
-                        update = dict()
+                        update = {}
                         if self.check_for_id(files.keys(), model_id):
                             for k in files.keys():
                                 if model_instance.id in k:
                                     update[k] = model_instance.to_dict()
                                 else:
                                     update[k] = files[k].to_dict()
-                            with open("file.json", mode='w') as json_file:
+                            with open("file.json", mode='w', encoding='utf-8')\
+                                    as json_file:
                                 json.dump(update, json_file)
                                 return
-                else:
-                    print("** no instance found **")
-                    return
-        else:
-            print("** class doesn't exist **")
+                print("** no instance found **")
+                return
+        print("** class doesn't exist **")
 
     def do_count(self, line):
         """Print count of instances of a particular class

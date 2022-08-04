@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import console
 from console import HBNBCommand
 from contextlib import redirect_stdout
 import pep8
@@ -28,8 +29,9 @@ class TestHBNBCommand(unittest.TestCase):
         Test that console.py file conform to PEP8
         """
         pep8style = pep8.StyleGuide(quiet=True)
-        result = pep8style.check_files(['models/console.py'])
-        self.assertEqual(result.total_errors, 1,
+        result = pep8style.check_files(['console.py'])
+        print(result.__dict__)
+        self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
     def test_pep8_conformance_test_HBNBCommand(self):
@@ -38,14 +40,14 @@ class TestHBNBCommand(unittest.TestCase):
         """
         pep8style = pep8.StyleGuide(quiet=True)
         result = pep8style.check_files(['tests/test_models/test_console.py'])
-        self.assertEqual(result.total_errors, 1,
+        self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
     def test_module_docstring(self):
         """
         Tests if module docstring documentation exist
         """
-        self.assertTrue(len(HBNBCommand.__doc__) >= 1)
+        self.assertTrue(len(console.__doc__) >= 1)
 
     def test_class_docstring(self):
         """
