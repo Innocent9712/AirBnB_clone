@@ -23,7 +23,11 @@ class BaseModel:
 
                 elif key == "id":
                     self.id = value
+                elif key == "__class__":
+                    self.__class__.__name__ = kwargs[key]
+                else:
                     setattr(self, key, value)
+
 
     def __str__(self):
         """String representation of the Base Model"""
