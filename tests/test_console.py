@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import os
-from unittest import TestLoader, result
 from unittest.mock import patch
 import console
 from console import HBNBCommand
