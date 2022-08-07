@@ -31,7 +31,7 @@ class HBNBCommand(cmd.Cmd):
         return True
 
     def precmd(self, line):
-        parse_line = line
+        parse_line = line.rstrip('\n')
         if line:
             if line[-1] == ")" and "." in line:
                 parse_line = ""
@@ -138,7 +138,7 @@ class HBNBCommand(cmd.Cmd):
                         if model_id not in k:
                             dict_filter[k] = files[k].to_dict()
                     with open("file.json", mode='w', encoding='utf-8')\
-                        as json_file:
+                            as json_file:
                         json.dump(dict_filter, json_file)
                 else:
                     print("** no instance found **")
