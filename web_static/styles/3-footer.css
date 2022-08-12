@@ -3,8 +3,6 @@ footer {
     border-top: 1px solid #CCCCCC;
     height: 60px;
     width: 100%;
-    position: absolute;
-    top: 92%;
     display: flex;
 }
 
