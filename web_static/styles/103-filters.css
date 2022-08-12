@@ -12,7 +12,7 @@ section.filters {
 
 section.filters button {
     font-size: 18px;
-    background-color: #FF5A5F;
+    background-color: #cc2d33;
     color: #FFFFFF;
     height: 48px;
     width: 20%;
@@ -117,4 +117,13 @@ ul.popover > li ul {
 
 ul.popover > li ul > li {
     margin-block: 0.5rem;
+}
+
+
+@media screen and (max-width: 500px) {
+    section.filters {
+        max-width: 90%;
+        margin-inline: auto;
+        font-size: 12px;
+    }
 }
